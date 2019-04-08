@@ -25,7 +25,7 @@ SECRET_KEY = 'x#*yj#p_cudl3&dolhx0j#a7u7qw)=wh+wne_03xwui7utar^&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["borischen.me"]
 
 
 # Application definition
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'travel_backend.apps.TravelBackendConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    # 'django.contrib.site',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -138,7 +139,7 @@ STATICFILES_DIRS = [
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 MEDIA_URL = '/guides/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'guides')
-
+SITE_ID=1 
 # TINYMCE_DEFAULT_CONFIG = {
 #     'height': 360,
 #     'width': 1120,
