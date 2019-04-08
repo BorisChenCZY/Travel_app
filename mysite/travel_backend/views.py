@@ -87,8 +87,14 @@ def info_page(request, article = None):
 			audio_title = request.POST['audio_title']
 			html = request.POST['content']
 			brief = request.POST['brief']
+			# print(request.POST.keys())
+			if 'top_view' in request.POST.keys():
+				# print(123)
+				top_view = 1
+			else:
+				top_view = 0
 			type = request.POST['type']
-			print('edit_id', edit_id)
+			# print('edit_id', edit_id)
 			if edit_id == "-1":
 				article = Article()
 			else:
@@ -97,6 +103,7 @@ def info_page(request, article = None):
 			article.brief = brief
 			article._type = type
 			article.audio_title = audio_title
+			article.top_view = top_view
 			article.file = 'guides/audio/{}.mp3'.format(article.article_id)
 			article.page = 'guides/article/{}.html'.format(article.article_id)
 			# print(type)
@@ -125,15 +132,21 @@ def info_page(request, article = None):
 		edit = article_id
 
 		obj = articles.get(article_id = article_id)
-		print(obj.image)
+		# print(obj.image)
+		if obj.top_view == 1:
+			top_view = "on"
+		else:
+			top_view = ""
 		with open(obj.page, 'r') as f:
 			form = UploadFileForm(initial = {
 				"title":obj.title,
 				"brief":obj.brief,
 				"type":obj._type,
-				# "image":obj.image,
+				"image":obj.image,
 				"content": f.read(),
-				"edit_id": article_id
+				"edit_id": article_id,
+				"top_view": top_view,
+
 				})
 	
 	list_ = [(obj.title, obj.brief, obj.article_id, obj.image) for obj in articles]
@@ -186,14 +199,14 @@ def delete_article(request):
 	if request.POST['type'] == 'delete':
 		idx = request.POST['idx']
 		article = obj.get(article_id = idx)
-		print(article.title)
+		# print(article.title)
 		article.delete()
 		return HttpResponse("Success")
 
 
 def wx_article_list(request):
 	articles = Article.objects.all()
-	list_ = [(obj.title, obj.brief, obj.article_id, obj.image, obj.page) for obj in articles]
+	list_ = [(obj.title, obj.brief, obj.article_id, obj.image, obj.page, obj._type, obj.top_view) for obj in articles]
 	return JsonResponse(list_, safe=False)
 
 def wx_get_article(request, idx):
@@ -231,7 +244,7 @@ def wx_comment(request):
 		if type == 'get':
 			article_id = request.POST['article_id']
 			commnets = Comment.objects.filter(article_id=article_id)
-			return_info = [(obj.article_id, obj.commnets, obj.date, obj.wx_id, obj.name, obj.comment_id) for obj in comments]
+			return_info = [(obj.article_id, obj.commnets, obj.date, obj.wx_id, obj.name, obj.comment_id, obj.top_view) for obj in comments]
 			return JsonResponse(return_info, safe=False)
 
 
