@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %} 信息管理 {% endblock %}
+
+
+
+{% block content %}
+
+<script type="text/javascript">
+  function delete_(idx)
+  {
+    console.log("test")
+      $.post("delete_article",
+      {type:"delete",
+       "idx": idx
+      }, 
+      function(result){
+        console.log(result)
+          if (result == "Success")
+          {
+            alert("成功删除")
+            if (idx == {{edit_id}}) {
+              window.location.href = window.location.href.substr(0, window.location.href.lastIndexOf("/") + 1)
+            }
+            else {
+              window.location.reload()
+            }
+         }
+          
+          else if (result == "Only one!")
+          {
+            alert("删除失败")
+            window.location.reload()
+          }
+        });
+  }
+  console.log({{edit_id}})
+  // if ({{edit_id}} != -1)
+  // {
+
+  // }
+
+</script>
+
+{% load static %}
+<!-- <img src="{% static '//14.jpg' %}" class="card-img-top" alt="..."> -->
+
+
+<div class="row flex-xl-nowrap">
+  <div class="col-12 col-md-4 col-xl-4 bd-sidebar">
+    {% for title, brief, idx, image in list %}
+        <div class="card" id="card_{{idx}}" style="width: 100%;">
+          <div style="max-height: 300px;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;">
+            <img src="{% static image %}" class="card-img-top" style="width: 100%;">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{brief}}</p>
+            <a href="/info/{{idx}}" class="btn btn-primary">编辑</a>
+            <button onclick="delete_({{idx}})" class="btn btn-danger">删除</button>
+          </div>
+
+        </div>
+        <br/>
+    {% endfor %}
+    <div>
+       <div class="card" style="width: 100%;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <!-- <h5 class="card-title">+</h5> -->
+            <!-- <p class="card-text"></p> -->
+            <a href="/info" class="btn btn-primary">新增</a>
+             <!-- <button onclick="delete_({{idx}})" class="btn btn-danger">删除</button> -->
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+  <main class="col-12 col-md-8 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
+  {% if form.is_multipart %}
+      <form enctype="multipart/form-data" method="post" action="/info/">
+  {% else %}
+      <form method="post" action="/info/">
+  {% endif %}
+    <div class="form-group">
+      <label for="title">标题</label>
+      {{ form.title }}
+      <small id="emailHelp" class="form-text text-muted">标题限制100字</small>
+    </div>
+
+  <div class="form-group">
+      <label for="title">类型</label>
+      {{ form.type }}
+  </div>
+
+  <div class="form-group">
+      <label for="title">简介</label>
+      <div style="width:100%">
+        {{ form.brief }}
+      </div>
+      <small id="emailHelp" class="form-text text-muted">简介限制1000字</small>
+  </div>
+
+  <div class="form-group">
+      <label for="title">正文</label>
+      {{ form.content }}
+  </div>
+
+  <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">上传图片</label>
+        {{ form.image }}
+      </div>
+      
+    </div>
+
+
+  <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">音频标题</label>
+        {{ form.audio_title }}
+      </div>
+      <div class="form-group col-md-6">
+        <!-- <label for="inputCity"></label> -->
+        {{ form.file }}
+      </div>
+    </div>
+
+    
+    {{form.edit_id}}
+
+
+  {% csrf_token %}
+  	
+  <!-- <textarea id="full-featured"> -->
+  <!-- </textarea> -->
+
+
+  	<button action="/info">保存</button>
+    <!-- <input hidden value={{edit_id}}> </input> -->
+  	</form>
+  </main>
+  </div> 
+
+  <script type="text/javascript">
+    $("#card_{{edit_id}}").addClass("bg-info text-white")
+    console.log("a")
+  </script> 
+  {% endblock %}

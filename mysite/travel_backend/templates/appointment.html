@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} 预约信息 {% endblock %}
+
+{% block content %}
+	<script>
+		console.log({{name}})
+		function search(){
+			let name = $("input.name")[0].value
+			let phone = $("input.phone")[0].value
+			let id_card = $("input.id_card")[0].value
+			let date = $('#datetimepicker_search').datetimepicker("viewDate").unix()
+			query = name + ":" + phone + ":" + id_card + ":" + date
+			if ({{filter}} === 1)
+				window.location.href = window.location.href.substr(0, window.location.href.lastIndexOf("/") + 1) + query
+			else
+				window.location.href += query
+		}
+
+		function clean_search(){
+			if ({{filter}} === 1)
+				window.location.href = window.location.href.substr(0, window.location.href.lastIndexOf("/") + 1)
+			
+		}
+
+		function update(id){
+			let name = $("input#name_"+id)[0].value
+			let phone = $("input#phone_"+id)[0].value
+			let id_card = $("input#id_card_"+id)[0].value
+			let date = $('#datetimepicker_'+id).datetimepicker("viewDate").unix()
+
+			$.post("change_info",
+			{idx:id,
+			"name":name,
+			"phone":phone,
+			"id_card":id_card,
+			"date":date,
+			type:"change"
+			}, 
+			function(result){
+		    	if (result == "Success")
+		    	{
+		    		alert("成功修改信息")
+		    		window.location.reload()
+		    	}
+		    	else
+		    	{
+		    		alert("更改失败，请检查输入是否合法")	
+		    	}
+		  	});
+		}
+
+		function delete_(id){
+			$.post("change_info",
+			{idx:id,
+			type:"delete"
+			}, 
+			function(result){
+		    	if (result == "Success")
+		    	{
+		    		alert("成功删除")
+		    		window.location.reload()
+		    	}
+		    	else
+		    	{
+		    		alert("删除失败，请检查输入是否合法")
+		    	}
+		  	});
+		}
+
+
+	</script>
+
+		<table class="table">
+		  <thead>
+		    <tr>
+		      <th scope="col">姓名</th>
+		      <th scope="col">手机</th>
+		      <th scope="col">身份证</th>
+		      <th scope="col">日期</th>
+		      <th scope="col">修改</th>
+		      <th scope="col">删除</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<tr>
+		  		<td>
+		      	<input type="text" class="form-control name" placeholder="" aria-describedby="basic-addon1" value="{{name}}">
+		      </td>
+		      <td>
+		      	<input type="text" class="form-control phone" placeholder=""  aria-describedby="basic-addon1" value="{{phone}}">
+		      </td>
+		      <td>
+		      	<input type="text" class="form-control id_card" placeholder=""  aria-describedby="basic-addon1" value="{{id_card}}">
+		      </td>
+		      <td>
+		      	<div class="row"> <!-- date_picker -->
+		      	    
+		      	        <div class="form-group">
+		      	            <div class="input-group date" id="datetimepicker_search" data-target-input="nearest">
+		      	                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker_search"/>
+		      	                <div class="input-group-append" data-target="#datetimepicker_search" data-toggle="datetimepicker">
+		      	                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+		      	                </div>
+		      	            </div>
+		      	        
+		      	    </div>
+		      	    <script type="text/javascript">
+		      	        $(function () {
+		      	        	if ({{filter}} === 1)
+		      	        	{
+		      	        		default_date = new Date({{date_stamp}});
+
+		      	        	} else
+		      	        	{
+		      	        		default_date = new Date();
+		      	        	}
+		      	            $('#datetimepicker_search').datetimepicker(
+		      	            		{date: default_date}
+		      	            	);
+		      	        	});
+		      	    </script>
+
+		      	    <td>
+		      	    	<button type="button" class="btn btn-success"onclick="search()">搜索</button>
+		      	    </td>
+
+		      	    <td>
+		      	    	<button type="button" class="btn btn-success"onclick="clean_search()">清除条件</button>
+		      	    </td>
+		      	</div>
+		      </td>
+		  	</tr>
+		  	{% for name, phone, id_card, date, idx in info %}
+		    <tr>
+		      <td>
+		      	<input type="text" class="form-control {{user_name}}" placeholder="" aria-describedby="basic-addon1" id="name_{{idx}}" value="{{name}}">
+		      </td>
+		      <td>
+		      	<input type="text" class="form-control {{user_name}}" placeholder=""  aria-describedby="basic-addon1" id="phone_{{idx}}" value="{{phone}}">
+		      </td>
+		      <td>
+		      	<input type="text" class="form-control {{user_name}}" placeholder=""  aria-describedby="basic-addon1" id="id_card_{{idx}}" value="{{id_card}}">
+		      </td>
+		      <td>
+		      	<div class="row"> <!-- date_picker -->
+		      	    
+		      	        <div class="form-group">
+		      	            <div class="input-group date" id="datetimepicker_{{idx}}" data-target-input="nearest">
+		      	                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker_{{idx}}"/>
+		      	                <div class="input-group-append" data-target="#datetimepicker_{{idx}}" data-toggle="datetimepicker">
+		      	                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+		      	                </div>
+		      	            </div>
+		      	        
+		      	    </div>
+		      	    <script type="text/javascript">
+
+		      	        $(function () {
+		      	            $('#datetimepicker_{{idx}}').datetimepicker(
+		      	            		{date: new Date({{date}} * 1000)}
+		      	            	);
+		      	        });
+		      	    </script>
+		      	</div>
+		      </td>
+		      <td>
+		      	<button type="button" class="btn btn-primary"onclick="update('{{idx}}')">修改</button>
+		      </td>
+		      <td>
+		      	<button type="button" class="btn btn-danger"onclick="delete_('{{idx}}')">删除</button>
+		      </td>
+		    </tr>
+		    {% endfor %}
+		</table>
+		<br/><br/><br/>
+		<!-- <form class="form-inline">
+		  <div class="form-group mb-2">
+		    <input type="username" class="form-control" id="staticEmail2" placeholder="输入用户名">
+		  </div>
+		  <div class="form-group mx-sm-3 mb-2">
+		    <label for="inputPassword2" class="sr-only">Password</label>
+		    <input type="password" class="form-control" id="inputPassword2" placeholder="输入密码">
+		  </div>
+		  
+		    
+		</form>
+		<button class="btn btn-primary mb-2" onclick="new_user(form)">新增用户</button>
+		  </div> -->
+	</div>
+{% endblock %}
