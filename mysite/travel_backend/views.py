@@ -211,13 +211,17 @@ def wx_article_list(request):
 
 def wx_get_article(request, idx):
 	obj = Article.objects.get(article_id=idx)
+	obj.number_of_viewed += 1
+	obj.save()
 	article_info = {
 				"title":obj.title,
 				"brief":obj.brief,
 				"type":obj._type,
 				"image":obj.image,
 				"content": obj.page,
+				"number_of_viewed": obj.number_of_viewed,
 				}
+
 	return JsonResponse(article_info)
 
 

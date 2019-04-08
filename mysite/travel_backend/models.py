@@ -18,6 +18,7 @@ class Article(models.Model):
 	image = models.CharField(max_length = 1000)
 	article_id = models.AutoField(primary_key=True)
 	top_view = models.IntegerField(default = 0)
+	number_of_viewed = models.IntegerField(default = 0)
 
 
 class Comment(models.Model):
