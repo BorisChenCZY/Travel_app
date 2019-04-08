@@ -34,7 +34,7 @@
           }
         });
   }
-  console.log({{edit_id}})
+  // console.log({{edit_id}})
   // if ({{edit_id}} != -1)
   // {
 
@@ -44,6 +44,29 @@
 
 {% load static %}
 <!-- <img src="{% static '//14.jpg' %}" class="card-img-top" alt="..."> -->
+<!-- 
+<head>
+<script src="{% static 'public/ueditor/ueditor.config.js' %}"></script>
+<script src="{% static 'public/ueditor/ueditor.all.js' %}"></script>
+<script src="{% static 'public/ueditor/xiumi-ue-dialog-v5.js' %}"></script>
+<link rel="stylesheet" href="{% static 'public/ueditor/xiumi-ue-v5.css' %}">
+  </head>
+  
+    <h1>编辑器示例</h1>
+    <div id="content"></div>
+    <script type="application/javascript">
+      url = window.location.href;
+      url = url.substr(0, url.indexOf('info'));
+      let ueditor_config = {
+        serverUrl: url + "static/public/ueditor?_csrf={{ ctx.csrf | safe }}",
+        initialFrameWidth: 700,
+        initialFrameHeight: 320,
+        autoHeightEnabled: false
+      };
+      var ue = UE.getEditor('content',ueditor_config);
+    </script> -->
+  
+
 
 
 <div class="row flex-xl-nowrap">

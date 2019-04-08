@@ -25,7 +25,8 @@ SECRET_KEY = 'x#*yj#p_cudl3&dolhx0j#a7u7qw)=wh+wne_03xwui7utar^&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["borischen.me"]
+ALLOWED_HOSTS = ["borischen.me",
+                 "localhost"]
 
 
 # Application definition
@@ -132,7 +133,7 @@ LOGIN_REDIRECT_URL = 'index'
 
 # STATIC_ROOT = BASE_DIR
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "guides"),
+    # os.path.join(BASE_DIR, "guides"),
     BASE_DIR,
 ]
 

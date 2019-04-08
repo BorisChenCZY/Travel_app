@@ -20,7 +20,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
 
 <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=1jsw2o02jw1xuhzjnvp6gtmrd6kmaz0nlmeiu2v1z58zq3v4"></script>
-  <script>tinymce.init({ selector:'textarea.tinymce' });</script>
+  <script>tinymce.init({ 
+    selector:'textarea.tinymce',
+    toolbar: 'newdocument undo redo visualaid cut copy paste selectall bold italic underline strikethrough subscript superscript removeformat formats| link image',
+    plugins: 'advlist autolink link image lists charmap print preview',
+   });</script>
 
 <script type="text/javascript">
   function getCookie(name) {

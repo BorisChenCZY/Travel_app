@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.shortcuts import redirect
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -15,7 +16,7 @@ urlpatterns = [
     path('appointment/', view = views.appointment_info, name='appointmentInfo'),
     path('login/', auth_views.LoginView.as_view(template_name="login/login.html"), name='login'),
 
-
+    # path("/info/public/<str:rest>", lambda request, rest: redirect('/static/public/' + rest)),
     path('wx/article_list', view = views.wx_article_list, name="wx_article_list"),
     path('wx/article/<str:idx>', view = views.wx_get_article, name="wx_get_article"),
     path('wx/comment/', view = views.wx_comment, name="wx_get_article"),
