@@ -13,7 +13,7 @@ def check_auth(request, url, content = {}):
 	if request.user != AnonymousUser and request.user.is_authenticated:
 		return render(request, url, content)
 	else:
-		return redirect('/login/')
+		return redirect('login/')
 
 def index(request):
 	template = loader.get_template('login/login.html')
